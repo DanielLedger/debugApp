@@ -13,11 +13,23 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "cordova-android": "^10.1.1"
+    "cordova-android": "^10.1.1",
+    "cordova-background-geolocation-plugin": "^2.0.1"
   },
   "cordova": {
     "platforms": [
       "android"
-    ]
+    ],
+    "plugins": {
+      "cordova-background-geolocation-plugin": {
+        "GOOGLE_PLAY_SERVICES_VERSION": "11+",
+        "ICON": "@mipmap/ic_launcher",
+        "SMALL_ICON": "@mipmap/ic_launcher",
+        "ACCOUNT_NAME": "@string/app_name",
+        "ACCOUNT_LABEL": "@string/app_name",
+        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
+        "CONTENT_AUTHORITY": "$PACKAGE_NAME"
+      }
+    }
   }
 }

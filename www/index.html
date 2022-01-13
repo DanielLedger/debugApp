@@ -34,17 +34,18 @@
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <meta name="color-scheme" content="light dark">
         <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
+        <title>Location testing</title>
     </head>
     <body>
         <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
+            <label for="usePlugin">Use geolocation plugin?</label>
+            <input type="checkbox" id="usePlugin">
+            <button id="startlogs">Start location logging</button>
+            <button id="stoplogs">Stop location logging</button>
+            <div id="map"></div>
         </div>
         <script src="cordova.js"></script>
         <script src="js/index.js"></script>
+        <script src="js/leaflet.js"></script>
     </body>
 </html>

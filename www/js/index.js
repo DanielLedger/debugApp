@@ -22,10 +22,18 @@
 
 var map;
 
+var locTrace = null;
+
+var lWatch = null;
+
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
+
+    document.getElementById('startlogs').onclick = onStartLocate;
+    document.getElementById('stoplogs').onclick = onStopLocate;
+
     setupMap();
 }
 
@@ -37,6 +45,40 @@ function setupMap(){
 	}).addTo(map);
     //Get our current location and zoom to it.
     map.locate({setView: true, maxZoom: 16});
+}
+
+function onStartLocate(){
+    console.log("Starting logging...");
+    //Wipe the polyline
+    if (locTrace !== null){
+        locTrace.remove();
+        locTrace = null;
+    }
+    if (!document.getElementById('usePlugin').checked){
+        //Use navigator.geolocation
+        console.log("Foreground logging (via navigator.geolocation)");
+        lWatch = navigator.geolocation.watchPosition((geoLoc) => {
+            onLocationFound(geoLoc.coords.latitude, geoLoc.coords.longitude);
+        });
+    }
+}
+
+function onStopLocate(){
+    if (lWatch !== null){
+        navigator.geolocation.clearWatch(lWatch);
+    }
+    console.log("Ending location logging.");
+    console.log(`Got points ${locTrace.getLatLngs()}`)
+}
+
+function onLocationFound(lat,lon){
+    console.log(`Got location lat: ${lat}, lon: ${lon}`);
+    if (locTrace === null){
+        locTrace = L.polyline([], {color: 'red'});
+        locTrace.addTo(map);
+    }
+    locTrace.addLatLng([lat, lon]);
+    console.log(`Showing trace as ${locTrace.getLatLngs()}`);
 }
 
 document.addEventListener('deviceready', onDeviceReady, false);

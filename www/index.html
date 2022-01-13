@@ -34,19 +34,18 @@
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <meta name="color-scheme" content="light dark">
         <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/leaflet.css">
         <title>Location testing</title>
         <style>
-            #map { height: 60vh; }
+            #map { height: 60vh; width: 90%; left: 5%;}
         </style>
     </head>
     <body>
-        <div class="app">
-            <label for="usePlugin">Use geolocation plugin?</label>
-            <input type="checkbox" id="usePlugin">
-            <button id="startlogs">Start location logging</button>
-            <button id="stoplogs">Stop location logging</button>
-            <div id="map"></div>
-        </div>
+        <label for="usePlugin">Use geolocation plugin?</label>
+        <input type="checkbox" id="usePlugin">
+        <button id="startlogs">Start location logging</button>
+        <button id="stoplogs">Stop location logging</button>
+        <div id="map"></div>
         <script src="cordova.js"></script>
         <script src="js/index.js"></script>
         <script src="js/leaflet.js"></script>

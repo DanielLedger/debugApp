@@ -17,8 +17,6 @@
  * under the License.
  */
 
-const { default: BackgroundGeolocation } = require("cordova-background-geolocation-plugin");
-
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 

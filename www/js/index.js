@@ -17,6 +17,8 @@
  * under the License.
  */
 
+const { default: BackgroundGeolocation } = require("cordova-background-geolocation-plugin");
+
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 
@@ -35,6 +37,17 @@ function onDeviceReady() {
     document.getElementById('stoplogs').onclick = onStopLocate;
 
     setupMap();
+
+    //Ask for some permissions we need. For some reason, this doesn't work as expected.
+    var permissions = cordova.plugins.permissions;
+    var permsRequired = [permissions.ACCESS_FINE_LOCATION, permissions.ACCESS_COARSE_LOCATION, permissions.ACCESS_BACKGROUND_LOCATION];
+    permissions.requestPermissions(permsRequired, () => {
+        alert("Got permissions successfully.");
+    },
+    () => {
+        alert("Not got required permissions.");
+    });
+
 }
 
 function setupMap(){
@@ -61,11 +74,37 @@ function onStartLocate(){
             onLocationFound(geoLoc.coords.latitude, geoLoc.coords.longitude);
         });
     }
+    else {
+        //Using plugin
+        BackgroundGeolocation.configure({
+            locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
+            desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+            stationaryRadius: 5,
+            distanceFilter: 5,
+            notificationTitle: 'Debug app',
+            notificationText: 'Debug location logging enabled.',
+            startForeground: true,
+            debug: true,
+            interval: 3000,
+            fastestInterval: 3000,
+            activitiesInterval: 3000
+        });
+
+        //I know I have location permission already, skip authorization stage.
+        BackgroundGeolocation.on('location', (loc) => {
+            onLocationFound(loc.latitude, loc.longitude);
+        });
+
+        BackgroundGeolocation.start();
+    }
 }
 
 function onStopLocate(){
     if (lWatch !== null){
         navigator.geolocation.clearWatch(lWatch);
+    }
+    else {
+        BackgroundGeolocation.stop();
     }
     console.log("Ending location logging.");
     console.log(`Got points ${locTrace.getLatLngs()}`)

@@ -19,11 +19,24 @@
 
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
-document.addEventListener('deviceready', onDeviceReady, false);
+
+var map;
 
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
 
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    document.getElementById('deviceready').classList.add('ready');
+    setupMap();
 }
+
+function setupMap(){
+    map = L.map('map');
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+		attribution: 'Map data and imagery &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.',
+    	maxZoom: 18
+	}).addTo(map);
+    //Get our current location and zoom to it.
+    map.locate({setView: true, maxZoom: 16});
+}
+
+document.addEventListener('deviceready', onDeviceReady, false);
